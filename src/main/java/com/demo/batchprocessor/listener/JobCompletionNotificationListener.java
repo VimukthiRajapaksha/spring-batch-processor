@@ -29,8 +29,21 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 //                            rs.getString(2))
 //            ).forEach(customer -> System.out.println("Found <" + customer + "> in the database."));
             int count = jdbcTemplate.queryForObject("SELECT COUNT(*) from customerInfo", Integer.class);
-
             System.out.println("**** COUNT **** : " + count);
+
+            jdbcTemplate.query("SELECT cardNumber, mobileNumber, email FROM customerInfo ORDER BY customer_id DESC LIMIT 1",
+                    (rs, row) -> new CustomerInfoBean(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(2))
+            ).forEach(customer -> System.out.println("LAST CUSTOMER <" + customer + "> in the database."));
+
+            jdbcTemplate.query("SELECT cardNumber, mobileNumber, email FROM customerInfo ORDER BY customer_id ASC LIMIT 1",
+                    (rs, row) -> new CustomerInfoBean(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(2))
+            ).forEach(customer -> System.out.println("FIRST CUSTOMER <" + customer + "> in the database."));
         }
     }
 
